@@ -241,8 +241,8 @@
                                                         </option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="number" id="{{$di->kode}}" name="qty-{{$di->kode}}" class="form-control" oninput="checkQty({{$di->kode}})" />
-                                                    <button class="btn btn-primary d-none" id="btn-qty-{{$di->kode}}" onclick="addToCart('{{$di->kode}}', '{{$di->nama}}', '{{$di->harga}}')">Tambah ke keranjang</button>
+                                                    <input type="number" id="{{$di->kode}}" name="qty-{{$di->kode}}" class="form-control" oninput="checkQty(event, '{{$di->kode}}')" />
+                                                    <button class="btn btn-primary d-none" id="btn-qty-{{$di->kode}}" onclick="addToCart(event, '{{$di->kode}}', '{{$di->nama}}', '{{$di->harga}}')">Tambah ke keranjang</button>
                                                 </div>
                                                 @endforeach
                                             </div>
@@ -398,7 +398,7 @@
             }
         }
 
-        async function addToCart(kode, nama, harga) {
+        async function addToCart(event, kode, nama, harga) {
                 const formData = {
                     kode,
                     nama_barang: nama,
@@ -440,10 +440,13 @@
                     },
                     body: JSON.stringify(formData)
                 })
+                if(response){
+                    window.location.reload()
+                }
                 
         }
 
-        function checkQty(kode) {
+        function checkQty(event, kode) {
             if (document.querySelector(`input[name="qty-${kode}"]`).value !== "" && document.querySelector(`input[name="qty-${kode}"]`).value != 0) {
                 document.getElementById(`btn-qty-${kode}`).classList.remove('d-none'); // Remove the 'd-none' class to show the button
             } else {
